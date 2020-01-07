@@ -8,8 +8,8 @@ cattlepos$ID <- c(1:10)
 
 
 
-cattlepos$x <- floor(runif(10, 1, 100))
-cattlepos$y <- floor(runif(10, 1, 100))
+cattlepos$x <- floor(runif(10, 40, 60))
+cattlepos$y <- floor(runif(10, 40, 60))
 
 
 cenx <- floor(sum(cattlepos$x)/length(cattlepos$x))
