@@ -15,7 +15,7 @@ This project aims to develop a cattle movement model that can be used to explore
 
 The location references points are food (local small scale and large scale landscape), water locations, middle of herd and individual.
 
-```{r cars}
+```{r echo=FALSE}
 library(geosphere)
 library(ggplot2)
 cattlepos <- data.frame(matrix(ncol=3, nrow=10))
@@ -43,7 +43,7 @@ cattlepos$angle <- atan(cattlepos$diffy/cattlepos$diffx)
 cattlepos$angle2 <- 2*pi - ((cattlepos$angle^2)^0.5)
 
 
-plot(cattlepos$x, cattlepos$y)
+#plot(cattlepos$x, cattlepos$y)
 
 ggplot(cattlepos, aes(x,y)) + geom_point() + geom_text(aes(label=ID), vjust =2) +
   geom_point(aes(x=cenx, y=ceny), colour="blue", size = 10)
