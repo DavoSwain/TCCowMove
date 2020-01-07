@@ -1,6 +1,6 @@
 ---
 title: "Cattle Movement Model"
-author: "Dave"
+author: "Dave Swain"
 date: "07/01/2020"
 output: html_document
 ---
@@ -9,14 +9,44 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+## Cattle Behavioural Movement Model
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+This project aims to develop a cattle movement model that can be used to explore how behavioural drivers impact landscape use by cattle. As an agent based simulation model it uses a standard time step and a series of location based reference points that are used to determine the move. Individual moves are dealt with via a probabalistic model and the behavioural states determines the relative weighting. The cattle change between behavioural states based on a hierarchy of needs, again the change occurs in a probabalistic manner. The relative weighting of the shift between behavioural states is determined by a series of rules. These rules relate to a number of key drivers. The drivers include need for water, food, protection, reproductive state, general preferences and class of animal.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+The location references points are food (local small scale and large scale landscape), water locations, middle of herd and individual.
 
 ```{r cars}
-summary(cars)
+library(geosphere)
+library(ggplot2)
+cattlepos <- data.frame(matrix(ncol=3, nrow=10))
+
+colnames(cattlepos) <- c("ID", "x", "y")
+
+cattlepos$ID <- c(1:10)
+
+
+
+cattlepos$x <- floor(runif(10, 40, 60))
+cattlepos$y <- floor(runif(10, 40, 60))
+
+
+cenx <- floor(sum(cattlepos$x)/length(cattlepos$x))
+
+ceny <- floor(sum(cattlepos$y)/length(cattlepos$y))
+
+
+cattlepos$diffx <- cattlepos$x-cenx
+cattlepos$diffy <- cattlepos$y-ceny
+
+cattlepos$angle <- atan(cattlepos$diffy/cattlepos$diffx)
+
+cattlepos$angle2 <- 2*pi - ((cattlepos$angle^2)^0.5)
+
+
+plot(cattlepos$x, cattlepos$y)
+
+ggplot(cattlepos, aes(x,y)) + geom_point() + geom_text(aes(label=ID), vjust =2) +
+  geom_point(aes(x=cenx, y=ceny), colour="blue", size = 10)
 ```
 
 ## Including Plots
@@ -24,7 +54,6 @@ summary(cars)
 You can also embed plots, for example:
 
 ```{r pressure, echo=FALSE}
-plot(pressure)
+
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
